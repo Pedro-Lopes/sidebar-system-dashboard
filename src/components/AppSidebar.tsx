@@ -1,5 +1,6 @@
 
 import { Home, Users, CheckSquare, Settings } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import {
   Sidebar,
@@ -14,7 +15,7 @@ import {
 } from "@/components/ui/sidebar";
 
 const menuItems = [
-  { title: "Home", icon: Home },
+  { title: "Home", icon: Home, path: "/home" },
   { title: "CRM", icon: Users },
   { title: "Gestão de Tarefas", icon: CheckSquare },
   { title: "Configuração", icon: Settings },
@@ -39,9 +40,18 @@ export function AppSidebar() {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton>
-                    <item.icon className="mr-3 h-5 w-5" />
-                    {!isCollapsed && <span>{item.title}</span>}
+                  <SidebarMenuButton asChild={!!item.path}>
+                    {item.path ? (
+                      <Link to={item.path}>
+                        <item.icon className="mr-3 h-5 w-5" />
+                        {!isCollapsed && <span>{item.title}</span>}
+                      </Link>
+                    ) : (
+                      <>
+                        <item.icon className="mr-3 h-5 w-5" />
+                        {!isCollapsed && <span>{item.title}</span>}
+                      </>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
