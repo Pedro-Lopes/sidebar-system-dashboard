@@ -1,6 +1,5 @@
 
 import { Home, Users, CheckSquare, Settings } from "lucide-react";
-import { NavLink, useLocation } from "react-router-dom";
 
 import {
   Sidebar,
@@ -15,25 +14,20 @@ import {
 } from "@/components/ui/sidebar";
 
 const menuItems = [
-  { title: "Home", url: "/", icon: Home },
-  { title: "CRM", url: "/crm", icon: Users },
-  { title: "Gestão de Tarefas", url: "/tarefas", icon: CheckSquare },
-  { title: "Configuração", url: "/configuracao", icon: Settings },
+  { title: "Home", icon: Home },
+  { title: "CRM", icon: Users },
+  { title: "Gestão de Tarefas", icon: CheckSquare },
+  { title: "Configuração", icon: Settings },
 ];
 
 export function AppSidebar() {
-  const { collapsed } = useSidebar();
-  const location = useLocation();
-  const currentPath = location.pathname;
-
-  const isActive = (path: string) => currentPath === path;
-  const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-primary text-primary-foreground font-medium" : "hover:bg-muted/50";
+  const { state } = useSidebar();
+  const isCollapsed = state === "collapsed";
 
   return (
     <Sidebar
-      className={collapsed ? "w-14" : "w-60"}
-      collapsible
+      className={isCollapsed ? "w-14" : "w-60"}
+      collapsible="icon"
     >
       <SidebarContent>
         <SidebarGroup>
@@ -45,15 +39,9 @@ export function AppSidebar() {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink 
-                      to={item.url} 
-                      end 
-                      className={({ isActive }) => getNavCls({ isActive })}
-                    >
-                      <item.icon className="mr-3 h-5 w-5" />
-                      {!collapsed && <span>{item.title}</span>}
-                    </NavLink>
+                  <SidebarMenuButton>
+                    <item.icon className="mr-3 h-5 w-5" />
+                    {!isCollapsed && <span>{item.title}</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
